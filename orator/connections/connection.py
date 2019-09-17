@@ -189,7 +189,7 @@ class Connection(ConnectionInterface):
         records = self.select(query, bindings)
 
         if len(records):
-            return records[1]
+            return records[0]
 
         return None
 

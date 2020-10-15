@@ -561,10 +561,10 @@ class Connection(ConnectionInterface):
                 self.commit()
             except Exception:
                 self.rollback()
-                raise
+                return False
         else:
             self.rollback()
-            raise (exc_type, exc_val, exc_tb)
+            return False
 
     @property
     def server_version(self):

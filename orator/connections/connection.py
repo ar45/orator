@@ -197,7 +197,7 @@ class Connection(ConnectionInterface):
         if bindings is None:
             bindings = {}
 
-        return self.select(query, bindings)
+        return self.select(query, bindings, False)
 
     @run
     def select(self, query, bindings=None, use_read_connection=True):

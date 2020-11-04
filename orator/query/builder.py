@@ -80,6 +80,7 @@ class QueryBuilder(object):
         self.limit_ = None
         self.offset_ = None
         self.unions = []
+        self.returnings = []
         self.union_limit = None
         self.union_offset = None
         self.union_orders = []
@@ -88,6 +89,27 @@ class QueryBuilder(object):
         self._backups = {}
 
         self._use_write_connection = False
+
+    def returning(self, *columns):
+        """
+        Set the columns to be selected
+
+        :param columns: The columns to be selected
+        :type columns: tuple
+
+        :return: The current QueryBuilder instance
+        :rtype: QueryBuilder
+        """
+        if not columns:
+            columns = ["*"]
+
+        self.returnings = list(columns)
+
+        return self
+
+    def clear_returning(self):
+        self.returnings = []
+        return self
 
     def select(self, *columns):
         """
@@ -1521,6 +1543,9 @@ class QueryBuilder(object):
         bindings = list(values.values()) + self.get_bindings()
 
         sql = self._grammar.compile_update(self, values)
+
+        if self.returnings:
+            return self._connection.select_from_write_connection(sql, self._clean_bindings(bindings))
 
         return self._connection.update(sql, self._clean_bindings(bindings))
 

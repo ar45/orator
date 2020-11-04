@@ -378,6 +378,14 @@ class QueryGrammar(Grammar):
     def compile_insert_get_id(self, query, values, sequence):
         return self.compile_insert(query, values)
 
+    def compile_returning(self, query):
+        returnings = query.returnings
+        if returnings:
+            columns = self.columnize(returnings)
+            return " RETURNING %s" % (columns,)
+        else:
+            return ""
+
     def compile_update(self, query, values):
         table = self.wrap_table(query.from__)
 

@@ -1502,6 +1502,9 @@ class QueryBuilder(object):
 
         bindings = self._clean_bindings(bindings)
 
+        if self.returnings:
+            return self._connection.select_from_write_connection(sql, bindings)
+
         return self._connection.insert(sql, bindings)
 
     def insert_get_id(self, values, sequence=None):

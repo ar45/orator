@@ -27,12 +27,6 @@ class PostgresQueryProcessor(QueryProcessor):
 
         id = result[0][0]
 
-        if isinstance(id, int):
-            return id
-
-        if str(id).isdigit():
-            return int(id)
-
         return id
 
     def process_column_listing(self, results):
